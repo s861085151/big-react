@@ -1,3 +1,4 @@
+import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols';
 import {
 	Type,
 	Key,
@@ -14,7 +15,7 @@ const ReactElement = (
 	props: Props
 ): ReactElementType => {
 	const element = {
-		$$typeof: null,
+		$$typeof: REACT_ELEMENT_TYPE,
 		type,
 		key,
 		ref,
@@ -48,20 +49,48 @@ export const jsx = (type: ElementType, config: any, ...maybeChildren: any) => {
 		}
 
 		if (Object.prototype.hasOwnProperty.call(config, prop)) {
-			props[props] = val;
+			props[prop] = val;
 		}
 	}
 
 	const maybeChildrenLength = maybeChildren.length;
 	if (maybeChildrenLength) {
 		if (maybeChildrenLength === 1) {
-			props.chilren = maybeChildren[0];
+			props.children = maybeChildren[0];
 		} else {
-			props.chilren = maybeChildren;
+			props.children = maybeChildren;
 		}
 	}
 
 	return ReactElement(type, key, ref, props);
 };
 
-export const jsxDev = jsx;
+export const jsxDEV = (type: ElementType, config: any) => {
+	let key: Key = null;
+	const props: Props = {};
+	let ref: Ref = null;
+
+	for (const prop in config) {
+		const val = config[prop];
+
+		if (prop === 'key') {
+			if (val !== undefined) {
+				key = '' + val;
+			}
+			continue;
+		}
+
+		if (props === 'ref') {
+			if (val !== undefined) {
+				ref = val;
+			}
+			continue;
+		}
+
+		if (Object.prototype.hasOwnProperty.call(config, prop)) {
+			props[prop] = val;
+		}
+	}
+
+	return ReactElement(type, key, ref, props);
+};
