@@ -38,10 +38,18 @@ function renderRoot(root: FiberRootNode) {
 		try {
 			wookLoop();
 		} catch (e) {
-			console.error('wookLoop发生错误', e);
+			if (__DEV__) {
+				console.error('wookLoop发生错误', e);
+			}
 			workInProgress = null;
 		}
 	} while (true);
+
+	// const finishedWork = root.current.alternate;
+	// root.finishedWork = finishedWork;
+
+	// // wip fiberNode树种的flags
+	// commitRoot(root);
 }
 
 function wookLoop() {
@@ -55,7 +63,7 @@ function performUnitOfWork(fiber: FiberNode) {
 	fiber.memoizedProps = fiber.pendingProps;
 
 	if (next === null) {
-		completeUnitOfWork(next);
+		completeUnitOfWork(fiber);
 	} else {
 		workInProgress = next;
 	}

@@ -10,7 +10,7 @@ import {
 import { ReactElementType } from 'shared/ReactTypes';
 import { scheduleUpdateOnFiber } from './workLoop';
 
-export function crateContainer(container: Container) {
+export function creatContainer(container: Container) {
 	const hostRootFiber = new FiberNode(HostRoot, {}, null);
 	const root = new FiberRootNode(container, hostRootFiber);
 
